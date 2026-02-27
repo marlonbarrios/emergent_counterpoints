@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergent Counterpoints (Marlon Barrios Solano, 2026)</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tweakpane@3.1.10/dist/tweakpane.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="title-bar">
+            <h1>Emergent Counterpoints <span class="author">(Marlon Barrios Solano, 2026)</span> <span class="version">v1.0</span></h1>
+        </div>
+        
+        <div class="main-content">
+            <div class="stage-intro">
+                Inspired by the Counterpoint Tool from the <a href="https://synchronousobjects.osu.edu/" target="_blank" rel="noopener noreferrer">Synchronous Objects</a> project, based on the choreographic work of William Forsythe and the dance One Flat Thing, reproduced.
+            </div>
+            <input type="file" id="sound-file-input" accept="audio/*" style="display: none;">
+            <div class="stage-wrapper">
+                <div id="canvas"></div>
+                <div id="tweakpane-container"></div>
+                <button type="button" id="show-panel-btn" class="show-panel-btn panel-hidden" aria-label="Show controls">Show panel</button>
+            </div>
+            <details class="how-to">
+                <summary>More Information</summary>
+                <p><strong>Shape</strong> — Click the Shape button and move the slider toward sameness so movers move in complete sameness. Move toward difference to see an irregular pattern: sometimes the same shape, sometimes symmetric or related, sometimes no match. Turn on the mark (⌒) to see when mover shapes match.</p>
+                <p><strong>Speed</strong> — With shape on sameness, direct speed; move toward difference. With the ⌒ button on, the fan appears on a mover when its arms are in speed alignment (moving at the same rate); move the slider toward difference to see which movers have aligned arms.</p>
+                <p><strong>More movers</strong> — Use + to add movers and build more complex motion.</p>
+                <p><strong>Motion</strong> — Use Zoom to give movers more room, then direct motion. When movers move at the same rate and in similar directions, they leave trails. Turn trails on with the ⌒ next to Motion.</p>
+                <p><strong>Flocking</strong> — Move the Flocking slider toward “strong” so movers are drawn toward each other and align their movement; some kinds of formations are created as they cluster and move together.</p>
+                <p><strong>Collapse</strong> — Degree of collapse: at <strong>max</strong> collapse all movers superimpose at the same center (the only moment they can overlap); with different shape, speed, and thinness you still see them. At <strong>min</strong> collapse they repel and spread toward opposite directions.</p>
+                <p>Use the ⌒ buttons beside each slider to turn markings on or off. Layer different kinds of alignments to create complex counterpoint. Use <strong>reset</strong> to start another composition afresh.</p>
+                <p class="project-credit">Inspired by the Counterpoint Tool from the <a href="https://synchronousobjects.osu.edu/" target="_blank" rel="noopener noreferrer">Synchronous Objects</a> project, based on the choreographic work of William Forsythe and the dance One Flat Thing, reproduced.</p>
+                <p class="project-credit">The original interactive Counterpoint Tool was created by the Synchronous Objects team (Norah Zuniga Shaw, Maria Palazzi, Benjamin Schroeder, and collaborators at Ohio State University). <a href="https://synchronousobjects.osu.edu/" target="_blank" rel="noopener noreferrer">synchronousobjects.osu.edu</a></p>
+            </details>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
