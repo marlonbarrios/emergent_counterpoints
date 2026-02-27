@@ -66,7 +66,7 @@ const MIN_WIDGET_DIST = 85;
 // Keep movers out from under the Tweakpane (top-right); inner 3/4 keeps them toward center
 const EDGE_MARGIN = 75;
 const INNER_INSET = 0.125;
-const MAX_ARC_MOVERS = 10;
+const MAX_ARC_MOVERS = 15;
 
 function getPlayBounds(w, h) {
     const outerMinX = EDGE_MARGIN;
@@ -145,11 +145,11 @@ class CounterpointTool {
         const segBump = beat > 0.5 ? Math.min(numSegs - 1, (segRaw | 0) + 1) : (segRaw | 0);
         const seg = Math.min(segBump, numSegs - 1);
         const scripts = [
-            [1, 2, 4, 3, 6, 5, 8, 7, 10, 8, 6, 5, 4, 3, 2, 4, 6, 8, 10, 8, 6, 4, 3, 2, 2, 2, 2, 2],
-            [10, 8, 6, 7, 5, 4, 6, 8, 10, 7, 5, 3, 4, 6, 8, 6, 4, 3, 5, 7, 6, 4, 3, 2, 2, 2, 2, 2],
-            [3, 5, 2, 6, 4, 8, 10, 7, 5, 9, 7, 4, 6, 10, 6, 4, 3, 5, 4, 3, 2, 3, 2, 2, 2, 2, 2, 2],
-            [2, 2, 5, 5, 10, 10, 6, 4, 8, 8, 4, 6, 10, 7, 4, 3, 6, 4, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2],
-            [4, 3, 2, 6, 4, 8, 6, 10, 8, 6, 4, 7, 5, 3, 6, 8, 10, 6, 4, 3, 2, 2, 2, 2, 2, 2, 2, 2]
+            [1, 2, 4, 3, 6, 5, 8, 7, 10, 12, 15, 12, 8, 6, 5, 4, 6, 8, 10, 8, 6, 4, 3, 2, 2, 2, 2, 2],
+            [15, 12, 8, 6, 7, 5, 4, 6, 8, 10, 12, 7, 5, 3, 4, 6, 8, 6, 4, 3, 5, 7, 6, 4, 3, 2, 2, 2],
+            [3, 5, 2, 6, 4, 8, 10, 12, 14, 10, 7, 4, 6, 10, 6, 4, 3, 5, 4, 3, 2, 3, 2, 2, 2, 2, 2, 2],
+            [2, 2, 5, 5, 10, 12, 15, 12, 8, 8, 4, 6, 10, 7, 4, 3, 6, 4, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+            [4, 3, 2, 6, 4, 8, 6, 10, 12, 15, 12, 7, 5, 3, 6, 8, 10, 6, 4, 3, 2, 2, 2, 2, 2, 2, 2, 2]
         ];
         const scriptIdx = this.soundDuration > 0 ? Math.floor(this.soundDuration * 0.13 + (this.soundDuration | 0) * 7) % scripts.length : 0;
         const moverBySegment = scripts[scriptIdx];
@@ -481,11 +481,8 @@ class CounterpointTool {
         const widget = this.widgets[this.widgets.length - 1];
         const dl = widget.x;
         const dr = w - widget.x;
-        const dt = widget.y;
-        const db = h - widget.y;
-        const nearest = [dl, dr, dt, db].indexOf(min(dl, dr, dt, db));
-        let exX, exY;
-        if (nearest === 0) { exX = -40; exY = widget.y; } else if (nearest === 1) { exX = w + 40; exY = widget.y; } else if (nearest === 2) { exX = widget.x; exY = -40; } else { exX = widget.x; exY = h + 40; }
+        const exX = dl <= dr ? -40 : w + 40;
+        const exY = widget.y;
         const dx = exX - widget.x, dy = exY - widget.y;
         const d = Math.sqrt(dx * dx + dy * dy) || 0.001;
         const speed = 4;
@@ -502,11 +499,8 @@ class CounterpointTool {
             if (widget.isExiting) return;
             const dl = widget.x;
             const dr = w - widget.x;
-            const dt = widget.y;
-            const db = h - widget.y;
-            const nearest = [dl, dr, dt, db].indexOf(min(dl, dr, dt, db));
-            let exX, exY;
-            if (nearest === 0) { exX = -40; exY = widget.y; } else if (nearest === 1) { exX = w + 40; exY = widget.y; } else if (nearest === 2) { exX = widget.x; exY = -40; } else { exX = widget.x; exY = h + 40; }
+            const exX = dl <= dr ? -40 : w + 40;
+            const exY = widget.y;
             const dx = exX - widget.x, dy = exY - widget.y;
             const d = Math.sqrt(dx * dx + dy * dy) || 0.001;
             widget.isExiting = true;

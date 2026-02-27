@@ -4,6 +4,8 @@
 
 **Marlon Barrios Solano, 2026** · v1.0
 
+**Live:** [https://marlonbarrios.github.io/emergent_counterpoints/](https://marlonbarrios.github.io/emergent_counterpoints/)
+
 ---
 
 ## About
