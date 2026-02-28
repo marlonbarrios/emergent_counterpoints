@@ -91,7 +91,7 @@ class CounterpointTool {
         this.widgets = [];
         this.isPlaying = true;
         this.gridSize = 40;
-        this.baseWidgetCount = 2;
+        this.baseWidgetCount = 0;
 
         this.params = {
             shape: 0.2,
@@ -145,11 +145,11 @@ class CounterpointTool {
         const segBump = beat > 0.5 ? Math.min(numSegs - 1, (segRaw | 0) + 1) : (segRaw | 0);
         const seg = Math.min(segBump, numSegs - 1);
         const scripts = [
-            [1, 2, 4, 3, 6, 5, 8, 7, 10, 12, 15, 12, 8, 6, 5, 4, 6, 8, 10, 8, 6, 4, 3, 2, 2, 2, 2, 2],
-            [15, 12, 8, 6, 7, 5, 4, 6, 8, 10, 12, 7, 5, 3, 4, 6, 8, 6, 4, 3, 5, 7, 6, 4, 3, 2, 2, 2],
-            [3, 5, 2, 6, 4, 8, 10, 12, 14, 10, 7, 4, 6, 10, 6, 4, 3, 5, 4, 3, 2, 3, 2, 2, 2, 2, 2, 2],
-            [2, 2, 5, 5, 10, 12, 15, 12, 8, 8, 4, 6, 10, 7, 4, 3, 6, 4, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2],
-            [4, 3, 2, 6, 4, 8, 6, 10, 12, 15, 12, 7, 5, 3, 6, 8, 10, 6, 4, 3, 2, 2, 2, 2, 2, 2, 2, 2]
+            [1, 2, 4, 3, 6, 5, 8, 7, 10, 12, 15, 15, 12, 8, 6, 5, 4, 6, 8, 10, 8, 6, 4, 3, 2, 2, 2, 2],
+            [15, 15, 12, 8, 6, 7, 5, 4, 6, 8, 10, 12, 15, 7, 5, 3, 4, 6, 8, 6, 4, 3, 5, 7, 6, 4, 3, 2],
+            [3, 5, 2, 6, 4, 8, 10, 12, 15, 15, 10, 7, 4, 6, 10, 6, 4, 3, 5, 4, 3, 2, 3, 2, 2, 2, 2, 2],
+            [2, 2, 5, 5, 10, 12, 15, 15, 12, 8, 8, 4, 6, 10, 7, 4, 3, 6, 4, 3, 2, 2, 2, 2, 2, 2, 2, 2],
+            [4, 3, 2, 6, 4, 8, 6, 10, 12, 15, 15, 12, 7, 5, 3, 6, 8, 10, 6, 4, 3, 2, 2, 2, 2, 2, 2, 2]
         ];
         const scriptIdx = this.soundDuration > 0 ? Math.floor(this.soundDuration * 0.13 + (this.soundDuration | 0) * 7) % scripts.length : 0;
         const moverBySegment = scripts[scriptIdx];
@@ -417,6 +417,7 @@ class CounterpointTool {
     addWidget(fromEdge = true) {
         const { cx, cy, minX, minY, maxX, maxY, w, h } = this.getStageCenterAndBounds();
         let x, y, vx, vy;
+        const enterOffset = 70;
         if (!fromEdge) {
             const n = this.widgets.length;
             const count = n + 1;
@@ -428,37 +429,37 @@ class CounterpointTool {
             vx = cos(angle) * 0.14 + (random() - 0.5) * 0.08;
             vy = sin(angle) * 0.14 + (random() - 0.5) * 0.08;
         } else {
-            const edgeMargin = 15;
             const side = floor(random(4));
             if (side === 0) {
                 x = random(minX, maxX);
-                y = -edgeMargin - random(20);
-                vx = (cx - x) * 0.012;
-                vy = (cy - y) * 0.012;
+                y = minY - enterOffset - random(25);
+                vx = (cx - x) * 0.014;
+                vy = (cy - y) * 0.014;
             } else if (side === 1) {
-                x = maxX + edgeMargin + random(20);
+                x = maxX + enterOffset + random(25);
                 y = random(minY, maxY);
-                vx = (cx - x) * 0.012;
-                vy = (cy - y) * 0.012;
+                vx = (cx - x) * 0.014;
+                vy = (cy - y) * 0.014;
             } else if (side === 2) {
                 x = random(minX, maxX);
-                y = h + edgeMargin + random(20);
-                vx = (cx - x) * 0.012;
-                vy = (cy - y) * 0.012;
+                y = maxY + enterOffset + random(25);
+                vx = (cx - x) * 0.014;
+                vy = (cy - y) * 0.014;
             } else {
-                x = -edgeMargin - random(20);
+                x = minX - enterOffset - random(25);
                 y = random(minY, maxY);
-                vx = (cx - x) * 0.012;
-                vy = (cy - y) * 0.012;
+                vx = (cx - x) * 0.014;
+                vy = (cy - y) * 0.014;
             }
         }
-        const clampX = constrain(x, minX, maxX);
-        const clampY = constrain(y, minY, maxY);
-        const widget = new Widget(clampX, clampY, this.widgets.length, this.params);
+        const startX = fromEdge ? x : constrain(x, minX, maxX);
+        const startY = fromEdge ? y : constrain(y, minY, maxY);
+        const widget = new Widget(startX, startY, this.widgets.length, this.params);
         widget.vx = vx;
         widget.vy = vy;
         widget.baseVx = vx;
         widget.baseVy = vy;
+        if (fromEdge) widget.isEntering = true;
         this.widgets.push(widget);
     }
 
@@ -691,6 +692,16 @@ class CounterpointTool {
                 this.pane.refresh();
             }
         }
+        let on = [this.marks.showShapeMarks, this.marks.showFanMarks, this.marks.showMotionTrails, this.marks.showTipPlanes];
+        let kept = 0;
+        for (let i = 0; i < 4; i++) {
+            if (on[i] && kept >= 2) on[i] = false;
+            if (on[i]) kept++;
+        }
+        this.marks.showShapeMarks = on[0];
+        this.marks.showFanMarks = on[1];
+        this.marks.showMotionTrails = on[2];
+        this.marks.showTipPlanes = on[3];
 
         const offMargin = 50;
         this.widgets = this.widgets.filter(widget => {
@@ -736,6 +747,7 @@ class CounterpointTool {
             activeIndex++;
         });
         this.applyFlocking();
+        this.applyLineFormation();
         this.applyCollapse();
         this.separateWidgets();
     }
@@ -745,17 +757,17 @@ class CounterpointTool {
         if (active.length === 0) return;
         const c = this.effectiveParams.collapse;
         const { cx, cy } = this.getStageCenterAndBounds();
-        const collapseSmooth = 0.06; // velocity blend for smoother motion
+        const collapseSmooth = 0.028;
         if (c >= 0.99) {
             active.forEach(widget => {
                 const dx = cx - widget.x;
                 const dy = cy - widget.y;
                 widget.vx += dx * collapseSmooth;
                 widget.vy += dy * collapseSmooth;
-                widget.baseVx *= 0.92;
-                widget.baseVy *= 0.92;
-                widget.x += (cx - widget.x) * 0.08;
-                widget.y += (cy - widget.y) * 0.08;
+                widget.baseVx *= 0.96;
+                widget.baseVy *= 0.96;
+                widget.x += (cx - widget.x) * 0.03;
+                widget.y += (cy - widget.y) * 0.03;
             });
             return;
         }
@@ -763,7 +775,7 @@ class CounterpointTool {
             active.forEach(widget => {
                 const dx = cx - widget.x;
                 const dy = cy - widget.y;
-                const pull = c * 0.012;
+                const pull = c * 0.006;
                 widget.vx += dx * pull;
                 widget.vy += dy * pull;
             });
@@ -774,7 +786,7 @@ class CounterpointTool {
                 const dx = widget.x - cx;
                 const dy = widget.y - cy;
                 const d = Math.sqrt(dx * dx + dy * dy) || 0.001;
-                const nudge = 0.04 * spread;
+                const nudge = 0.018 * spread;
                 widget.vx += (dx / d) * nudge;
                 widget.vy += (dy / d) * nudge;
             });
@@ -799,15 +811,34 @@ class CounterpointTool {
         cy /= n;
         avx /= n;
         avy /= n;
-        const posBlend = 0.012 * flockStrength;
-        const velBlend = 0.035 * flockStrength;
+        const posBlend = 0.004 * flockStrength;
+        const velBlend = 0.018 * flockStrength;
         active.forEach(w => {
             w.vx += (avx - w.vx) * velBlend;
             w.vy += (avy - w.vy) * velBlend;
-            w.baseVx += (avx - w.baseVx) * velBlend * 0.8;
-            w.baseVy += (avy - w.baseVy) * velBlend * 0.8;
+            w.baseVx += (avx - w.baseVx) * velBlend * 0.7;
+            w.baseVy += (avy - w.baseVy) * velBlend * 0.7;
             w.x += (cx - w.x) * posBlend;
             w.y += (cy - w.y) * posBlend;
+        });
+    }
+
+    applyLineFormation() {
+        const active = this.widgets.filter(w => !w.isExiting);
+        if (this.effectiveParams.flocking <= 0 || active.length < 2) return;
+        const f = this.effectiveParams.flocking;
+        const w = typeof width !== 'undefined' ? width : 400;
+        const h = typeof height !== 'undefined' ? height : 300;
+        const b = getPlayBounds(w, h);
+        const stageH = b.maxY - b.minY;
+        const numLanes = 3;
+        const laneY = (i) => b.minY + (stageH * (i + 0.5)) / numLanes;
+        const strength = 0.012 * f;
+        active.forEach((widget, i) => {
+            const lane = i % numLanes;
+            const targetY = laneY(lane);
+            const dy = targetY - widget.y;
+            widget.vy += dy * strength;
         });
     }
 
@@ -819,16 +850,16 @@ class CounterpointTool {
         const repulsionX = this.widgets.map(() => 0);
         const repulsionY = this.widgets.map(() => 0);
         for (let i = 0; i < this.widgets.length; i++) {
-            if (this.widgets[i].isExiting) continue;
+            if (this.widgets[i].isExiting || this.widgets[i].isEntering) continue;
             for (let j = i + 1; j < this.widgets.length; j++) {
-                if (this.widgets[j].isExiting) continue;
+                if (this.widgets[j].isExiting || this.widgets[j].isEntering) continue;
                 const a = this.widgets[i];
                 const b = this.widgets[j];
                 const dx = b.x - a.x;
                 const dy = b.y - a.y;
                 const d = Math.sqrt(dx * dx + dy * dy) || 0.001;
                 if (d < minDist) {
-                    const pushStrength = (minDist - d) * 0.12;
+                    const pushStrength = (minDist - d) * 0.06;
                     const nx = dx / d;
                     const ny = dy / d;
                     repulsionX[i] -= nx * pushStrength;
@@ -841,13 +872,13 @@ class CounterpointTool {
         const w = typeof width !== 'undefined' ? width : 400;
         const h = typeof height !== 'undefined' ? height : 300;
         const b = getPlayBounds(w, h);
-        const sepSmooth = 0.4;
+        const sepSmooth = 0.22;
         this.widgets.forEach((widget, i) => {
             if (widget.isExiting) return;
             widget.vx += repulsionX[i] * sepSmooth;
             widget.vy += repulsionY[i] * sepSmooth;
-            widget.x = Math.max(b.minX, Math.min(b.maxX, widget.x + repulsionX[i] * 0.15));
-            widget.y = Math.max(b.minY, Math.min(b.maxY, widget.y + repulsionY[i] * 0.15));
+            widget.x = Math.max(b.minX, Math.min(b.maxX, widget.x));
+            widget.y = Math.max(b.minY, Math.min(b.maxY, widget.y));
         });
     }
 
@@ -905,6 +936,7 @@ class Widget {
         this.restDuration = 0;
         this.isResting = false;
         this.isExiting = false;
+        this.isEntering = false;
         this.exitVx = 0;
         this.exitVy = 0;
         this.trail = [];
@@ -938,8 +970,8 @@ class Widget {
 
         // Motion sliders: sameness = move in same direction as leader; difference = each widget its own path
         if (params.motionH < 0.5 && params.motionV < 0.5 && leader && index > 0) {
-            this.baseVx += (leader.baseVx - this.baseVx) * 0.03;
-            this.baseVy += (leader.baseVy - this.baseVy) * 0.03;
+            this.baseVx += (leader.baseVx - this.baseVx) * 0.018;
+            this.baseVy += (leader.baseVy - this.baseVy) * 0.018;
         }
 
         // Speed: sameness = one shared rate and direction (all arms move together); difference = each arm its own speed/direction
@@ -1010,7 +1042,7 @@ class Widget {
                 targetVx = this.baseVx + (sin(t + this.seed1) * motionHMult + sin(t * 0.5 + hPhase) * motionHMult * 0.6) * motionHVar * motionAmp;
                 targetVy = this.baseVy + (cos(t + this.seed2) * motionVMult + cos(t * 0.5 + vPhase) * motionVMult * 0.6) * motionVVar * motionAmp;
             }
-            const smooth = 0.07;
+            const smooth = 0.035;
             this.vx += (targetVx - this.vx) * smooth;
             this.vy += (targetVy - this.vy) * smooth;
             this.x += this.vx;
@@ -1018,23 +1050,28 @@ class Widget {
             const w = typeof width !== 'undefined' ? width : 400;
             const h = typeof height !== 'undefined' ? height : 300;
             const b = getPlayBounds(w, h);
-            if (this.x < b.minX) {
-                this.x = b.minX;
-                this.vx = max(0, this.vx);
-                this.baseVx = max(0, this.baseVx);
-            } else if (this.x > b.maxX) {
-                this.x = b.maxX;
-                this.vx = min(0, this.vx);
-                this.baseVx = min(0, this.baseVx);
+            if (this.isEntering) {
+                if (this.x >= b.minX && this.x <= b.maxX && this.y >= b.minY && this.y <= b.maxY) this.isEntering = false;
             }
-            if (this.y < b.minY) {
-                this.y = b.minY;
-                this.vy = max(0, this.vy);
-                this.baseVy = max(0, this.baseVy);
-            } else if (this.y > b.maxY) {
-                this.y = b.maxY;
-                this.vy = min(0, this.vy);
-                this.baseVy = min(0, this.baseVy);
+            if (!this.isEntering) {
+                if (this.x < b.minX) {
+                    this.x = b.minX;
+                    this.vx = max(0, this.vx);
+                    this.baseVx = max(0, this.baseVx);
+                } else if (this.x > b.maxX) {
+                    this.x = b.maxX;
+                    this.vx = min(0, this.vx);
+                    this.baseVx = min(0, this.baseVx);
+                }
+                if (this.y < b.minY) {
+                    this.y = b.minY;
+                    this.vy = max(0, this.vy);
+                    this.baseVy = max(0, this.baseVy);
+                } else if (this.y > b.maxY) {
+                    this.y = b.maxY;
+                    this.vy = min(0, this.vy);
+                    this.baseVy = min(0, this.baseVy);
+                }
             }
         }
 
@@ -1050,15 +1087,21 @@ class Widget {
         rotate(this.angle);
         const zoomVal = typeof zoom === 'number' ? zoom : 0.3;
         const scale = 0.35 + zoomVal * 1.0;
-        // Obvious speed-alignment mark: thick stroke, bright blue, larger arc
         noFill();
-        stroke(70, 110, 200);
-        strokeWeight(3);
-        const rMin = 22 * scale;
-        const rMax = 42 * scale;
-        for (let r = rMin; r <= rMax; r += 5 * scale) {
-            arc(0, 0, r * 2, r * 2, 0, TWO_PI * 0.75);
+        const r0 = 22 * scale;
+        const r1 = 36 * scale;
+        const span = TWO_PI / 3;
+        stroke(70, 130, 220, 140);
+        strokeWeight(1.2);
+        for (let step = 0; step < 3; step++) {
+            const a0 = step * span + 0.08;
+            const a1 = a0 + span * 0.82;
+            arc(0, 0, r0 * 2, r0 * 2, a0, a1);
+            arc(0, 0, r1 * 2, r1 * 2, a0, a1);
         }
+        stroke(100, 150, 235, 70);
+        strokeWeight(0.9);
+        arc(0, 0, (r0 + r1) * 2, (r0 + r1) * 2, 0, TWO_PI);
         pop();
     }
 
