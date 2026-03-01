@@ -2,7 +2,7 @@
 
 **Emergent Counterpoints** is an interactive web application that explores alignment and counterpoint through animated “movers” on a stage. It is a p5.js reimagining of the original Counterpoint Tool from the [Synchronous Objects](https://synchronousobjects.osu.edu/) project, created after the original Flash-based tool was deprecated.
 
-**Marlon Barrios Solano, 2026** · v1.0
+**[Marlon Barrios Solano](https://marlonbarrios.github.io/), 2026** · v1.0
 
 **Live:** [https://marlonbarrios.github.io/emergent_counterpoints/](https://marlonbarrios.github.io/emergent_counterpoints/)
 
@@ -87,7 +87,7 @@ When the track **ends**, all movers exit the stage.
 
 ## Credits
 
-- **This adaptation** — Marlon Barrios Solano, 2026 (p5.js reimplementation after Flash deprecation).
+- **This adaptation** — [Marlon Barrios Solano](https://marlonbarrios.github.io/), 2026 (p5.js reimplementation after Flash deprecation).
 - **Original Counterpoint Tool** — Synchronous Objects team (Norah Zuniga Shaw, Maria Palazzi, Benjamin Schroeder, and collaborators at Ohio State University).  
   [synchronousobjects.osu.edu](https://synchronousobjects.osu.edu/)
 - **Choreography** — William Forsythe, *One Flat Thing, reproduced*.
