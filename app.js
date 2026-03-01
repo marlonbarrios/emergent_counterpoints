@@ -128,6 +128,7 @@ class CounterpointTool {
         this._arcLastRefreshProgress = -1;
         this.effectiveParams = Object.assign({}, this.params);
         this._initialRepositionDone = false;
+        this.darkMode = false;
     }
 
     getPerformanceArc(progress, audio) {
@@ -215,6 +216,14 @@ class CounterpointTool {
         }
         const pane = new PaneClass({ container: container, title: 'Controls', expanded: true });
         this.pane = pane;
+
+        const displayFolder = pane.addFolder({ title: 'Display', expanded: true });
+        const darkInput = displayFolder.addInput(this, 'darkMode', { label: 'Dark mode' });
+        darkInput.on('change', () => {
+            document.body.classList.toggle('dark-mode', this.darkMode);
+            if (this.pane && typeof this.pane.refresh === 'function') this.pane.refresh();
+        });
+        document.body.classList.toggle('dark-mode', this.darkMode);
 
         // Parameters folder (Tweakpane 3 uses addInput, not addBinding)
         const paramsFolder = pane.addFolder({ title: 'Parameters', expanded: true });
@@ -538,7 +547,7 @@ class CounterpointTool {
         const z = typeof zoom === 'number' ? zoom : 0.3;
         const scale = 0.35 + z * 1.0;
         const gridSpacing = this.gridSize * scale;
-        fill(211, 211, 211); // #D3D3D3 light grey to match reference
+        fill(this.darkMode ? 70 : 211, this.darkMode ? 70 : 211, this.darkMode ? 70 : 211);
         noStroke();
         const dotSize = 2.2;
         for (let x = gridSpacing; x < width; x += gridSpacing) {
@@ -551,7 +560,7 @@ class CounterpointTool {
     // Shape match: draw a line between two widgets when they have the same shape (alignment)
     drawShapeMarks() {
         if (!this.marks.showShapeMarks || this.widgets.length < 2) return;
-        stroke(100, 130, 180, 180);
+        stroke(this.darkMode ? 120 : 100, this.darkMode ? 160 : 130, this.darkMode ? 220 : 180, this.darkMode ? 200 : 180);
         strokeWeight(2);
         noFill();
         for (let i = 0; i < this.widgets.length; i++) {
@@ -570,7 +579,7 @@ class CounterpointTool {
     drawFanMarks() {
         if (!this.marks.showFanMarks) return;
         this.widgets.forEach(w => {
-            if (w.sameArmSpeed()) w.drawFan(this.effectiveParams.zoom);
+            if (w.sameArmSpeed()) w.drawFan(this.effectiveParams.zoom, this.darkMode);
         });
     }
 
@@ -580,7 +589,7 @@ class CounterpointTool {
         const active = this.widgets.filter(w => !w.isExiting);
         if (active.length === 0) return;
         const tips = active.map(w => w.getTipPositions(this.effectiveParams.zoom, this.effectiveParams));
-        stroke(0);
+        stroke(this.darkMode ? 200 : 0);
         strokeWeight(1);
         noFill();
         for (let i = 0; i < tips.length; i++) {
@@ -604,7 +613,7 @@ class CounterpointTool {
     }
 
     clearTrailLayer() {
-        if (this.trailLayer) this.trailLayer.background(255, 255, 255, 0);
+        if (this.trailLayer) this.trailLayer.background(this.darkMode ? 30 : 255, this.darkMode ? 30 : 255, this.darkMode ? 30 : 255, 0);
     }
 
     // Trails: persistent layer; each frame we add a segment and fade the layer so traces decay in time
@@ -617,11 +626,13 @@ class CounterpointTool {
             this.trailLayer.background(255, 255, 255, 0);
         }
         this.trailLayer.push();
-        // Decay in time: fade existing trails so older traces gradually disappear (longer decay = lower alpha)
-        this.trailLayer.fill(255, 255, 255, 3);
+        const fadeR = this.darkMode ? 30 : 255;
+        const fadeG = this.darkMode ? 30 : 255;
+        const fadeB = this.darkMode ? 30 : 255;
+        this.trailLayer.fill(fadeR, fadeG, fadeB, 3);
         this.trailLayer.noStroke();
         this.trailLayer.rect(0, 0, w, h);
-        this.trailLayer.stroke(100, 130, 180, 200);
+        this.trailLayer.stroke(this.darkMode ? 130 : 100, this.darkMode ? 170 : 130, this.darkMode ? 230 : 180, 200);
         this.trailLayer.strokeWeight(2);
         this.trailLayer.noFill();
         this.widgets.forEach(w => {
@@ -887,13 +898,13 @@ class CounterpointTool {
             this.repositionWidgets();
             this._initialRepositionDone = true;
         }
-        background(255);
+        background(this.darkMode ? 30 : 255);
         this.drawGrid();
         this.drawTrails();
         this.drawShapeMarks();
         this.drawFanMarks();
         this.drawTipPlanes();
-        this.widgets.forEach(w => w.draw(this.effectiveParams.zoom, this.effectiveParams));
+        this.widgets.forEach(w => w.draw(this.effectiveParams.zoom, this.effectiveParams, this.darkMode));
     }
 }
 
@@ -1081,7 +1092,8 @@ class Widget {
         if (this.trail.length > TRAIL_LENGTH) this.trail.shift();
     }
 
-    drawFan(zoom) {
+    drawFan(zoom, darkMode) {
+        const dark = !!darkMode;
         push();
         translate(this.x, this.y);
         rotate(this.angle);
@@ -1091,7 +1103,7 @@ class Widget {
         const r0 = 22 * scale;
         const r1 = 36 * scale;
         const span = TWO_PI / 3;
-        stroke(70, 130, 220, 140);
+        stroke(dark ? 100 : 70, dark ? 160 : 130, dark ? 240 : 220, dark ? 180 : 140);
         strokeWeight(1.2);
         for (let step = 0; step < 3; step++) {
             const a0 = step * span + 0.08;
@@ -1099,7 +1111,7 @@ class Widget {
             arc(0, 0, r0 * 2, r0 * 2, a0, a1);
             arc(0, 0, r1 * 2, r1 * 2, a0, a1);
         }
-        stroke(100, 150, 235, 70);
+        stroke(dark ? 130 : 100, dark ? 180 : 150, dark ? 245 : 235, 70);
         strokeWeight(0.9);
         arc(0, 0, (r0 + r1) * 2, (r0 + r1) * 2, 0, TWO_PI);
         pop();
@@ -1139,7 +1151,8 @@ class Widget {
         return out;
     }
 
-    draw(zoom, params) {
+    draw(zoom, params, darkMode) {
+        const dark = !!darkMode;
         push();
         translate(this.x, this.y);
         rotate(this.angle);
@@ -1159,8 +1172,9 @@ class Widget {
         const offset = useShapeDiff ? this.shapeOffset : 0;
         if (useShapeDiff) centerDotD *= this.deformCenter;
 
-        // Central solid black dot (#000000)
-        fill(0);
+        const moverFill = dark ? 220 : 0;
+        const tipFill = dark ? 120 : 211;
+        fill(moverFill);
         noStroke();
         ellipse(0, 0, centerDotD * scale, centerDotD * scale);
 
@@ -1181,7 +1195,7 @@ class Widget {
             const bHalf = (armBaseW * scale) / 2;
             const mHalf = (armMidW * scale) / 2;
 
-            fill(0);
+            fill(moverFill);
             noStroke();
             beginShape();
             vertex(0 + perpX * bHalf, 0 + perpY * bHalf);
@@ -1191,7 +1205,7 @@ class Widget {
             vertex(0 - perpX * bHalf, 0 - perpY * bHalf);
             endShape(CLOSE);
 
-            fill(211, 211, 211);
+            fill(tipFill, tipFill, tipFill);
             ellipse(tipX, tipY, tipDotD * scale, tipDotD * scale);
         }
         pop();

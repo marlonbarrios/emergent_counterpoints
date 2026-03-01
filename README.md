@@ -6,6 +6,14 @@
 
 **Live:** [https://marlonbarrios.github.io/emergent_counterpoints/](https://marlonbarrios.github.io/emergent_counterpoints/)
 
+### Screenshots
+
+| one | two |
+|-----|-----|
+| ![one](one.png) | ![two](two.png) |
+| three | four |
+| ![three](three.png) | ![four](four.png) |
+
 ---
 
 ## About
@@ -92,6 +100,10 @@ When the track **ends**, all movers exit the stage.
 ├── index.html   # Entry point, structure, “More Information” text
 ├── styles.css   # Layout, panel, button and stage styling
 ├── app.js       # p5.js sketch, movers, arc, sound, Tweakpane setup
+├── one.png      # Screenshot 1
+├── two.png      # Screenshot 2
+├── three.png    # Screenshot 3
+├── four.png     # Screenshot 4
 └── README.md    # This file
 ```
 
