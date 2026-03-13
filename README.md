@@ -6,9 +6,6 @@ This project was created **for educational and research purposes**, exploring pr
 
 **Marlon Barrios Solano, 2026** · v1.0  
 
-Live:  
-https://marlonbarrios.github.io/emergent_counterpoints/
-
 ---
 
 # Screenshots
