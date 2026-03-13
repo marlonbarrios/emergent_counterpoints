@@ -124,8 +124,7 @@ No build step required.
 # Credits
 
 ## Emergent Counterpoints
-
-Concept, design, and implementation  
+p5.js mplementation  
 **Marlon Barrios Solano (2026)**
 
 ---
