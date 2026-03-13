@@ -1,12 +1,17 @@
 # Emergent Counterpoints
 
-**Emergent Counterpoints** is an interactive web application that explores alignment and counterpoint through animated “movers” on a stage. It is a p5.js reimagining of the original Counterpoint Tool from the [Synchronous Objects](https://synchronousobjects.osu.edu/) project, created after the original Flash-based tool was deprecated.
+**Emergent Counterpoints** is an interactive web application that explores alignment and counterpoint through animated “movers” on a stage. It is a p5.js reimagining of the original Counterpoint Tool from the Synchronous Objects project, created after the original Flash-based tool was deprecated.
 
-**[Marlon Barrios Solano](https://marlonbarrios.github.io/), 2026** · v1.0
+This project was created **for educational and research purposes**, exploring procedural choreography, computational aesthetics, and the visualization of choreographic counterpoint.
 
-**Live:** [https://marlonbarrios.github.io/emergent_counterpoints/](https://marlonbarrios.github.io/emergent_counterpoints/)
+**Marlon Barrios Solano, 2026** · v1.0  
 
-### Screenshots
+Live:  
+https://marlonbarrios.github.io/emergent_counterpoints/
+
+---
+
+# Screenshots
 
 | one | two |
 |-----|-----|
@@ -16,95 +21,160 @@
 
 ---
 
-## About
+# About
 
-The project is inspired by the Counterpoint Tool from the Synchronous Objects project, based on the choreographic work of **William Forsythe** and the dance *One Flat Thing, reproduced*. A procedural algorithm drives the motion of “movers”: each has three arms that rotate at clock-face positions and at different speeds. You shape relationships of unison and difference in **shape**, **speed**, and **motion**, and layer markings (shape match, fan, trails, tip planes) to build visual counterpoint.
+The project is inspired by the **Counterpoint Tool** from the **Synchronous Objects** project, based on the choreographic work *One Flat Thing, reproduced* by **William Forsythe**.
 
----
+A procedural algorithm drives the motion of animated entities called **movers**. Each mover has three arms rotating at clock-face positions and at different speeds. Users shape relationships of unison and difference in:
 
-## How to Run
+- shape
+- speed
+- motion
 
-1. **Load the app**  
-   Open `index.html` in a modern web browser (Chrome, Firefox, Safari, Edge). No server or build step is required.
+Visual markings such as **shape matches, speed fans, motion trails, and tip planes** reveal patterns of alignment and divergence, allowing users to construct visual counterpoint structures.
 
-2. **Controls**  
-   Use the **Controls** panel (top-right). You can collapse it or click **Hide panel**; use the **Show panel** button to bring it back. The stage uses the full window; movers stay within a 75px margin from the edges.
-
-3. **Sound (optional)**  
-   In the **Sound** folder: **Load sound file** to pick an audio file (e.g. MP3). Use **Play**, **Pause**, **Restart**, and **Stop** as needed.
-
-4. **Auto Performance**  
-   Turn **Auto performance** on to let the piece run with the music: the app will start playback (if a track is loaded), vary the number of movers (1–10), change markings over time, and modulate zoom, collapse, shape, speed, flocking, and motion in response to the track. Turn it off to stop the music and take full manual control.
+This reimplementation recreates the conceptual spirit of the original Flash tool using contemporary web technologies so it can continue to serve as a **learning and exploration environment for choreographic structures, generative systems, and computational performance studies**.
 
 ---
 
-## Features
+# Note from the Author
 
-### Parameters (panel)
+This project was created in **just a few hours of hacking and experimentation** as a small tribute to the extraordinary **Synchronous Objects** project.
 
-- **Activity** — Less ↔ more activity (including pauses).
-- **Flocking** — None ↔ strong; movers cluster and align direction.
-- **Shape** — Sameness ↔ difference in arm poses.
-- **Speed** — Sameness ↔ difference in arm rotation speed.
-- **Motion ↑↓ / ↔** — Vertical and horizontal motion (sameness ↔ difference).
-- **Zoom** — Out ↔ In (camera scale).
-- **Collapse** — Min ↔ max; at max, movers superimpose at the center; at min, they repel and spread.
+When the original Counterpoint Tool disappeared after the deprecation of Flash, I found it surprising that such an **important and visionary project in choreographic computation and digital humanities** no longer had a working interactive version.
 
-### Markings
+The original work remains one of the most inspiring examples of how choreography, computation, visualization, and research can intersect. This lightweight reinterpretation was created simply to make a similar exploratory experience accessible again using modern web technologies.
 
-- **Shape match lines** — Lines between movers with the same shape.
-- **Fan (speed align)** — Arcs when a mover’s arms move at the same rate (shown in short bursts during auto performance).
-- **Motion trails** — Trails when movers move in similar directions (with decay over time).
-- **Tip planes △** — Triangle markers at arm tips.
-
-### Actions
-
-- **Add mover** / **Remove mover** — Up to 10 movers; new movers enter from the edges, removed ones exit toward the edges.
-- **Pause / Play** — Pause or resume the animation (independent of sound).
-- **Toggle all marks** — Turn all markings on or off.
-- **Reset** — Restore default parameters and marking state.
-- **Hide panel** — Hide the control panel; **Show panel** (floating button) brings it back.
-
-### Sound & auto performance
-
-- **Load sound file** — Choose an audio file.
-- **Play / Pause / Restart / Stop** — Standard playback.
-- **Auto performance** — When ON: starts the loaded track and runs the “arc” (mover count, markings, zoom, collapse, shape, speed, flocking, motion) in response to the music and song progress. When OFF: stops playback and leaves control to the sliders.
-- **Track sensitivity** — How much the auto performance reacts to the audio (bass, mids, highs, level, beat).
-
-When the track **ends**, all movers exit the stage.
+It should be understood as **a pedagogical and experimental homage**, not a replacement for the original project.
 
 ---
 
-## Technical Stack
+# How to Run
 
-- **p5.js** (1.7.0) — Drawing and animation.
-- **Tweakpane** (3.1.10) — Control panel (top-right, collapsible).
-- **HTML5 Audio** — Playback and analysis (no p5.sound).
-- **Vanilla JS**, **CSS** — Layout and styling; responsive, no build step.
+## 1. Load the App
+
+Open `index.html` in a modern web browser.
+
+Supported browsers:
+
+- Chrome
+- Firefox
+- Safari
+- Edge
+
+No server or build step is required.
 
 ---
 
-## Credits
+## 2. Controls
 
-- **This adaptation** — [Marlon Barrios Solano](https://marlonbarrios.github.io/), 2026 (p5.js reimplementation after Flash deprecation).
-- **Original Counterpoint Tool** — Synchronous Objects team (Norah Zuniga Shaw, Maria Palazzi, Benjamin Schroeder, and collaborators at Ohio State University).  
-  [synchronousobjects.osu.edu](https://synchronousobjects.osu.edu/)
-- **Choreography** — William Forsythe, *One Flat Thing, reproduced*.
+Use the **Controls panel** located in the top-right corner.
+
+The panel can be:
+
+- collapsed
+- hidden
+- restored with the floating **Show panel** button
+
+The stage occupies the full browser window, and movers remain within a **75px margin** from the screen edges.
 
 ---
 
-## File Structure
+## 3. Sound (Optional)
 
-```
-├── index.html   # Entry point, structure, “More Information” text
-├── styles.css   # Layout, panel, button and stage styling
-├── app.js       # p5.js sketch, movers, arc, sound, Tweakpane setup
-├── one.png      # Screenshot 1
-├── two.png      # Screenshot 2
-├── three.png    # Screenshot 3
-├── four.png     # Screenshot 4
-└── README.md    # This file
-```
+Use the **Sound folder controls**:
 
-Open `index.html` in a browser to run the project.
+- Load sound file
+- Play
+- Pause
+- Restart
+- Stop
+
+---
+
+## 4. Auto Performance
+
+Enable **Auto performance** to let the system run autonomously with the music.
+
+When enabled, the application will:
+
+- start audio playback
+- vary the number of movers (1–10)
+- change markings over time
+- modulate zoom and collapse
+- vary shape and speed
+- adjust flocking and motion parameters
+
+When disabled:
+
+- music stops
+- the user regains full manual control.
+
+---
+
+# Technical Stack
+
+- **p5.js**
+- **Tweakpane**
+- **HTML5 Audio API**
+- **Vanilla JavaScript**
+- **CSS**
+
+No build step required.
+
+---
+
+# Credits
+
+## Emergent Counterpoints
+
+Concept, design, and implementation  
+**Marlon Barrios Solano (2026)**
+
+---
+
+## Synchronous Objects Project
+
+*Synchronous Objects for One Flat Thing, reproduced* (2009)
+
+Creative Direction
+
+- William Forsythe  
+- Maria Palazzi  
+- Norah Zuniga Shaw  
+
+Generative Design
+
+- Matthew Lewis  
+
+Research Collaborators
+
+- Scott deLahunta  
+- Patrick Haggard  
+- Alva Noë  
+
+Dance Research Collaborators
+
+- Jill Johnson  
+- Christopher Roman  
+- Elizabeth Waterhouse  
+
+Institutions
+
+- Advanced Computing Center for the Arts and Design (ACCAD)
+- Ohio State University Department of Dance
+- The Forsythe Company
+
+Project website  
+https://synchronousobjects.osu.edu/
+
+---
+
+# License
+
+MIT License
+
+Copyright (c) 2026  
+Marlon Barrios Solano
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files to deal in the Software without restriction.
